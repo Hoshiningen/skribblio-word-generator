@@ -26,19 +26,82 @@ python generate.py db.json > words.txt
 
 ## Word Database Schema
 
-Word database files need to be in the following format in order to be used by the python script. The name is for humans, and the list of words is processed by the script. All words need to be capitalized. Duplicate words are removed (case-sensitive) after loading the database.
+Skribblio has certain requirements on the words that are given to it for custom games. The following schema (`database.json`) enforces these requirements on any database loaded into it. No words will be selected if the validation fails.
 
 ```json
 {
-    "name":,
-    "words": []
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "Word Database Schema",
+
+    "type" : "object",
+    "properties": {
+        "name" : {
+            "type" : "string",
+            "description": "The name of the word database"
+        },
+        "words" : {
+            "type" : "array",
+            "description": "An array of words stored in the database",
+            "items" : {
+                "type" : "string",
+                "minLength": 3,
+                "maxLength": 30
+            },
+            "minItems": 4,
+            "uniqueItems": true
+        }
+    },
+    
+    "required": ["words"]
 }
 ```
 
-## Skribblio Custom Word Requirements
+## Example Failing Databases
 
-The game as the following requirements on custom words:
-- The minimum word count is 4
-- The maximum word size is 30
+Too few words:
 
-The script forces the database to adhere to these requirements. No words will be generated if there's a violation.
+```json
+{
+    "$schema": "./database.json",
+    "name": "",
+    "words": [
+        "word1", "word2", "word3"
+    ]
+}
+```
+
+A word in the database is shorter than the minimum length:
+
+```json
+{
+    "$schema": "./database.json",
+    "name": "",
+    "words": [
+        "word1", "word2", "word3", "a"
+    ]
+}
+```
+
+A word in the database is larger than the maximum length:
+
+```json
+{
+    "$schema": "./database.json",
+    "name": "",
+    "words": [
+        "word1", "word2", "word3", "areallylongwordthatexceedsthemaxlength"
+    ]
+}
+```
+
+The database contains duplicates:
+
+```json
+{
+    "$schema": "./database.json",
+    "name": "",
+    "words": [
+        "unique1", "unique2", "duplicate", "duplicate"
+    ]
+}
+```

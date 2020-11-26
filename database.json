@@ -1,0 +1,35 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "Word Database Schema",
+
+    "type" : "object",
+    "properties": {
+        "name" : {
+            "type" : "string",
+            "description": "The name of the word database"
+        },
+        "words" : {
+            "type" : "array",
+            "description": "An array of words stored in the database",
+            "items" : {
+                "type" : "string",
+                "minLength": 3,
+                "maxLength": 30
+            },
+            "minItems": 4,
+            "uniqueItems": true
+        }
+    },
+    
+    "required": ["words"],
+
+    "examples": [
+        {
+            "$schema": "./database.json",
+            "name": "Example1",
+            "words": [
+                "Unique1", "Unique2", "Unique3", "Unique4"
+            ]
+        }
+    ]
+}
