@@ -1,6 +1,19 @@
-# Skribblio Word Generator
+# Skribblio Random Word Selection
 
 This is a python script that generates a random set of words, based on the words given to it in a `.json` word database. The user is able to specify how many words they want to generate, where the given word count needs to be between 4 and the number of words in the given database.
+
+## Dependencies
+
+The script depends on `jsonschema` to validate word databases passed in as command line arguments. It's a good idea is to install dependencies in a virtual environment:
+
+```bash
+pip install virtualenv
+
+virtualenv venv
+source venv/Scripts/activate
+
+pip install -r requirements.txt
+```
 
 ## Usage
 
